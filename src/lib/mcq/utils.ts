@@ -28,7 +28,17 @@ export function buildBlocks(
   return chunk(list, settings.blockSize);
 }
 
-export function gradeBlock(questions: MCQQuestion[], answers: UserAnswerMap) {
+export interface GradedResult {
+  id: string;
+  isCorrect: boolean;
+  chosen: string[];
+  correct: string[];
+}
+
+export function gradeBlock(
+  questions: MCQQuestion[],
+  answers: UserAnswerMap
+): GradedResult[] {
   return questions.map((q) => {
     const chosen = new Set(answers[q.id] ?? []);
     const correct = new Set(q.answer);
@@ -38,65 +48,85 @@ export function gradeBlock(questions: MCQQuestion[], answers: UserAnswerMap) {
   });
 }
 
-export function safeExtractQuestions(raw: string): any[] {
+export function safeExtractQuestions(raw: string): MCQQuestion[] {
   try {
     const i = raw.indexOf('[');
-    if (i >= 0) return JSON.parse(raw.slice(i));
+    if (i >= 0) return JSON.parse(raw.slice(i)) as MCQQuestion[];
     return [];
   } catch {
     return [];
   }
 }
 
-export function normalizeAIExtras(pool: MCQPool, data: any): MCQQuestion[] {
-  const normalizeArray = (maybe: any): any[] =>
-    Array.isArray(maybe) ? maybe : [];
-  const base = Array.isArray(data)
+type AIResponse =
+  | MCQQuestion[]
+  | { questions: MCQQuestion[] }
+  | { raw: string };
+
+export function normalizeAIExtras(
+  pool: MCQPool,
+  data: AIResponse
+): MCQQuestion[] {
+  const base: unknown = Array.isArray(data)
     ? data
-    : Array.isArray((data as any)?.questions)
-    ? (data as any).questions
-    : typeof (data as any)?.raw === 'string'
-    ? safeExtractQuestions((data as any).raw)
+    : 'questions' in data
+    ? data.questions
+    : 'raw' in data && typeof data.raw === 'string'
+    ? safeExtractQuestions(data.raw)
     : [];
 
+  const arr: unknown[] = Array.isArray(base) ? base : [];
+
   const existingIds = new Set(pool.questions.map((q) => q.id));
-  const extraCoerced = normalizeArray(base)
-    .map((q: any, idx: number) => coerceAIQuestion(q, idx, existingIds))
-    .filter(Boolean) as MCQQuestion[];
+  const extraCoerced = arr
+    .map((q, idx) => coerceAIQuestion(q, idx, existingIds))
+    .filter((q): q is MCQQuestion => q !== null);
 
   return extraCoerced;
 }
 
 function coerceAIQuestion(
-  q: any,
+  q: unknown,
   idx: number,
   existingIds: Set<string>
 ): MCQQuestion | null {
+  if (typeof q !== 'object' || q === null) return null;
+  const obj = q as Partial<MCQQuestion> & {
+    options?: Array<Partial<{ id: string; text: string }>>;
+    answer?: unknown[];
+    type?: unknown;
+    explanation?: unknown;
+  };
+
   const baseId =
-    typeof q?.id === 'string' && q.id.trim()
-      ? q.id.trim()
+    typeof obj.id === 'string' && obj.id.trim()
+      ? obj.id.trim()
       : `ai-${Date.now()}-${idx}`;
   let id = baseId;
   let n = 1;
   while (existingIds.has(id)) id = `${baseId}-${n++}`;
   existingIds.add(id);
 
-  const options = Array.isArray(q?.options)
-    ? q.options
-        .map((o: any, j: number) => ({
+  const options = Array.isArray(obj.options)
+    ? obj.options
+        .map((o, j) => ({
           id: String(o?.id ?? `opt-${j}`),
           text: String(o?.text ?? `Opción ${j + 1}`),
         }))
-        .filter((o: any) => o.text)
+        .filter((o) => !!o.text)
     : [];
 
-  const answer = Array.isArray(q?.answer)
-    ? q.answer.map((x: any) => String(x))
+  const answer = Array.isArray(obj.answer)
+    ? obj.answer.map((x) => String(x))
     : [];
+
   const prompt =
-    String(q?.prompt ?? '').trim() || `Pregunta generada #${idx + 1}`;
+    typeof obj.prompt === 'string' && obj.prompt.trim()
+      ? obj.prompt.trim()
+      : `Pregunta generada #${idx + 1}`;
+
   const type: 'radio' | 'checkbox' =
-    q?.type === 'checkbox' ? 'checkbox' : 'radio';
+    obj.type === 'checkbox' ? 'checkbox' : 'radio';
 
   if (!prompt || options.length < 2 || answer.length < 1) return null;
 
@@ -106,7 +136,8 @@ function coerceAIQuestion(
     prompt,
     options,
     answer,
-    explanation: q?.explanation ? String(q.explanation) : undefined,
+    explanation:
+      typeof obj.explanation === 'string' ? obj.explanation : undefined,
     source: 'ai',
   };
 }

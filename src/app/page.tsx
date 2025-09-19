@@ -81,8 +81,6 @@ export default function MCQAi() {
         <ResultsPanel
           questions={activeQuestions}
           answers={userAnswers}
-          onRetry={resetAll}
-          onBack={() => setPhase('quiz')}
           explanations={explanations}
           loadingAI={loadingAI}
         />

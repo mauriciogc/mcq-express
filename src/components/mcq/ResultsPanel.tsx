@@ -2,11 +2,7 @@
 'use client';
 import React, { useMemo } from 'react';
 import type { MCQQuestion, UserAnswerMap } from '@/lib/types';
-import {
-  ChatCenteredDotsIcon,
-  RobotIcon,
-  InfoIcon,
-} from '@phosphor-icons/react';
+import { ChatCenteredDotsIcon, RobotIcon } from '@phosphor-icons/react';
 import { FrostedModal } from '../ui/FrostedModal';
 
 interface Props {
@@ -14,8 +10,6 @@ interface Props {
   answers: UserAnswerMap;
   explanations: Record<string, string> | null;
   loadingAI: boolean;
-  onBack: () => void;
-  onRetry: () => void;
 }
 
 export default function ResultsPanel({
@@ -23,8 +17,6 @@ export default function ResultsPanel({
   answers,
   explanations,
   loadingAI,
-  onBack,
-  onRetry,
 }: Props) {
   const rows = useMemo(() => {
     return questions.map((q) => {

@@ -28,7 +28,7 @@ export default function SetupPanelPretty({
     <div className="p-6 header-card bg-[var(--color-card)]/80 space-y-6 shadow-xl">
       <div>
         <h2 className="text-xl text-[var(--color-text)]">
-          Configuración del Quiz --{String(hasAI)}--
+          Configuración del Quiz
         </h2>
         <p className="text-sm text-[var(--color-muted)]">
           Define el bloque y mejora con IA

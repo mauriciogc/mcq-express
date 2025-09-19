@@ -13,6 +13,17 @@ import { useHasAI } from './useHasAI';
 
 export type Phase = 'setup' | 'quiz' | 'results';
 
+type AIExplainResponse = {
+  explanations?: Record<string, string>;
+};
+
+function isAIExplainResponse(value: unknown): value is AIExplainResponse {
+  if (typeof value !== 'object' || value === null) return false;
+  if (!('explanations' in value)) return true;
+  const ex = (value as { explanations?: unknown }).explanations;
+  return ex === undefined || (typeof ex === 'object' && ex !== null);
+}
+
 export function useMCQ(initialSettings?: Partial<QuizSettings>) {
   const hasAI = useHasAI();
   const [pool, setPool] = useState<MCQPool | null>(null);
@@ -105,10 +116,10 @@ export function useMCQ(initialSettings?: Partial<QuizSettings>) {
     setLoadingAI(true);
     try {
       const data = await aiExplain(mistakes, { questions: activeQuestions });
-      const ex = (data as any)?.explanations as
-        | Record<string, string>
-        | undefined;
-      if (ex) setExplanations(ex);
+
+      if (isAIExplainResponse(data) && data.explanations) {
+        setExplanations(data.explanations);
+      }
     } catch (e) {
       console.error(e);
     } finally {
