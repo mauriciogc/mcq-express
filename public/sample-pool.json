@@ -1,0 +1,38 @@
+{
+  "title": "Simulador DESSEG - Módulo de ejemplo",
+  "version": "2025-09-05",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "radio",
+      "prompt": "¿Qué formato usa SOAP para los mensajes?",
+      "options": [
+        { "id": "o1", "text": "CSV" },
+        { "id": "o2", "text": "XML" },
+        { "id": "o3", "text": "YAML" },
+        { "id": "o4", "text": "JSON" }
+      ],
+      "answer": ["o2"],
+      "explanation": "SOAP especifica XML para el intercambio de mensajes."
+    },
+    {
+      "id": "q2",
+      "type": "checkbox",
+      "prompt": "Selecciona 2 premisas de 'Vulnerable & Outdated Components' (OWASP)",
+      "options": [
+        {
+          "id": "o1",
+          "text": "No conoces las versiones de todos tus componentes"
+        },
+        { "id": "o2", "text": "No analizas vulnerabilidades de forma regular" },
+        {
+          "id": "o3",
+          "text": "Todas las entradas de usuario se escapan siempre"
+        },
+        { "id": "o4", "text": "Nunca usas dependencias de terceros" }
+      ],
+      "answer": ["o1", "o2"],
+      "explanation": "Corresponde a las prácticas recomendadas por OWASP para M3."
+    }
+  ]
+}

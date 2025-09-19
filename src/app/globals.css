@@ -1,0 +1,140 @@
+/* src/styles/globals.css */
+@import 'tailwindcss';
+
+/* =========================
+   THEME – Pastel Playful UI
+   ========================= */
+@theme {
+  /* ===== Neutrales / superficies ===== */
+  --color-bg: #f5f3ff; /* lila muy pálido (canvas) */
+  --color-surface: #f9f9ff; /* paneles secundarios */
+  --color-card: #ffffff; /* tarjetas */
+  --color-border: #e8e7f3; /* líneas suaves */
+  --color-text: #2e2e3e; /* texto principal */
+  --color-muted: #9aa0b4; /* texto secundario */
+
+  /* ===== Primarios/semánticos ===== */
+  --color-primary: #ff8a5b; /* peach/orange (CTA) */
+  --color-secondary: #8a7dff; /* lilac/violet (accent) */
+  --color-info: #5ab2ff; /* sky blue */
+  --color-success: #74d69a; /* mint green */
+  --color-warning: #ffd66b; /* soft yellow */
+  --color-danger: #ff6b83; /* coral red/pink */
+
+  /* Lilac / Violet */
+  --lilac-50: #f3f1ff;
+  --lilac-100: #ebe7ff;
+  --lilac-200: #dcd6ff;
+  --lilac-300: #c3bbff;
+  --lilac-400: #a79dff;
+  --lilac-500: #8a7dff; /* base */
+  --lilac-600: #7567ec;
+  --lilac-700: #5c51cf;
+  --lilac-800: #4a41a7;
+  --lilac-900: #38337d;
+
+  /* Sky Blue */
+  --sky-50: #eef7ff;
+  --sky-100: #d9efff;
+  --sky-200: #bce2ff;
+  --sky-300: #97d2ff;
+  --sky-400: #78c1ff;
+  --sky-500: #5ab2ff; /* base */
+  --sky-600: #4098ea;
+  --sky-700: #357cc0;
+  --sky-800: #2c6296;
+  --sky-900: #234b73;
+
+  /* Mint / Green */
+  --mint-50: #effaf4;
+  --mint-100: #ddf5e8;
+  --mint-200: #bfead4;
+  --mint-300: #9ddfbe;
+  --mint-400: #85d7ad;
+  --mint-500: #74d69a; /* base */
+  --mint-600: #58c483;
+  --mint-700: #44a56b;
+  --mint-800: #367f54;
+  --mint-900: #285e40;
+
+  /* Coral / Danger */
+  --coral-50: #fff0f3;
+  --coral-100: #ffd7de;
+  --coral-200: #ffb3c1;
+  --coral-300: #ff92a6;
+  --coral-400: #ff7a95;
+  --coral-500: #ff6b83; /* base */
+  --coral-600: #f65a74;
+  --coral-700: #d4475e;
+  --coral-800: #a93749;
+  --coral-900: #7c2735;
+}
+
+@layer utilities {
+  .bg-gradient {
+    @apply fixed inset-0 -z-10 bg-[conic-gradient(at_30%_20%,#a78bfa_0deg,#60a5fa_120deg,#34d399_240deg,#f472b6_360deg)] opacity-80 [mask-image:radial-gradient(70%_70%_at_50%_50%,#000,transparent_80%)] blur-2xl pointer-events-none;
+  }
+}
+
+@layer components {
+  .header-card {
+    @apply mx-auto mt-8 border border-gray-100 rounded-2xl bg-white/30 backdrop-blur-xl shadow-lg;
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full;
+  }
+
+  .badge-lilac {
+    @apply bg-[var(--lilac-100)]/50     text-[var(--lilac-700)];
+  }
+  .badge-sky {
+    @apply bg-[var(--sky-100)]/50     text-[var(--sky-700)];
+  }
+  .badge-mint {
+    @apply bg-[var(--mint-100)]/50    text-[var(--mint-700)];
+  }
+  .badge-coral {
+    @apply bg-[var(--coral-100)]/50   text-[var(--coral-700)];
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1 text-xs p-1;
+  }
+  .circle {
+    @apply h-2 min-w-2 rounded-full;
+  }
+
+  .btn {
+    @apply w-20 flex flex-col items-center justify-center gap-1.5 p-1 rounded-xl text-[11px] font-medium hover:backdrop-blur-xl hover:bg-[var(--color-card)]/30  transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-center;
+  }
+
+  .btn-secondary {
+    @apply flex flex-row items-center justify-center text-sm gap-1.5 px-5 py-4 rounded-xl font-medium hover:backdrop-blur-xl hover:bg-[var(--color-text)]/80  transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-center border bg-[var(--color-text)] text-[var(--color-card)];
+  }
+}
+
+.progress {
+  @apply w-full h-2 rounded-[999px] overflow-hidden bg-[var(--color-border)];
+}
+.progress > .bar {
+  @apply h-full block rounded-[999px];
+}
+
+.progress[data-variant='mint'] > .bar {
+  background: var(--mint-500);
+}
+
+.progress[data-variant='coral'] > .bar {
+  background: linear-gradient(
+    to right,
+    var(--coral-500) 0%,
+    color-mix(in srgb, var(--coral-100) 10%, transparent) 100%
+  );
+}
+
+/* Focus ring suave por accesibilidad */
+*:focus-visible {
+  box-shadow: var(--ring-focus);
+  border-radius: inherit;
+}
