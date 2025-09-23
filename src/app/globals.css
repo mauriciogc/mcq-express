@@ -85,16 +85,16 @@
     @apply inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full;
   }
 
-  .badge-lilac {
+  .badge[data-variant='lilac'] {
     @apply bg-[var(--lilac-100)]/50     text-[var(--lilac-700)];
   }
-  .badge-sky {
+  .badge[data-variant='sky'] {
     @apply bg-[var(--sky-100)]/50     text-[var(--sky-700)];
   }
-  .badge-mint {
+  .badge[data-variant='mint'] {
     @apply bg-[var(--mint-100)]/50    text-[var(--mint-700)];
   }
-  .badge-coral {
+  .badge[data-variant='coral'] {
     @apply bg-[var(--coral-100)]/50   text-[var(--coral-700)];
   }
 
@@ -111,6 +111,11 @@
 
   .btn-secondary {
     @apply flex flex-row items-center justify-center text-sm gap-1.5 px-5 py-4 rounded-xl font-medium hover:backdrop-blur-xl hover:bg-[var(--color-text)]/80  transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-center border bg-[var(--color-text)] text-[var(--color-card)];
+  }
+
+  .floating-nav {
+    @apply mx-auto  bg-white/30 backdrop-blur-xl shadow-lg border border-t-[var(--color-text)]/20 transition-all;
+    box-shadow: 0px -6px 10px rgba(0, 0, 0, 0.08);
   }
 }
 
@@ -131,10 +136,4 @@
     var(--coral-500) 0%,
     color-mix(in srgb, var(--coral-100) 10%, transparent) 100%
   );
-}
-
-/* Focus ring suave por accesibilidad */
-*:focus-visible {
-  box-shadow: var(--ring-focus);
-  border-radius: inherit;
 }

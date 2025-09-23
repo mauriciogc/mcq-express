@@ -37,36 +37,7 @@ export default function QuizBlock({
           />
         ))}
       </ul>
-      <div className="flex items-center justify-between">
-        {hasPrev ? (
-          <button
-            type="button"
-            onClick={() => setCurrentBlock((b) => Math.max(0, b - 1))}
-            className="btn-secondary"
-            title="Anterior"
-          >
-            <ArrowLeftIcon size={18} aria-hidden />
-            <span>Anterior</span>
-          </button>
-        ) : (
-          <span />
-        )}
-        {hasNext ? (
-          <button
-            type="button"
-            onClick={() =>
-              setCurrentBlock((b) => Math.min(blocksCount - 1, b + 1))
-            }
-            className="btn-secondary"
-            title="Siguiente"
-          >
-            <ArrowRightIcon size={18} aria-hidden />
-            <span>Siguiente</span>
-          </button>
-        ) : (
-          <span />
-        )}
-      </div>
+      <div className="h-[40px]" aria-hidden />
     </div>
   );
 }

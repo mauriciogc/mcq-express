@@ -11,7 +11,7 @@ import { buildBlocks, gradeBlock, normalizeAIExtras } from '@/lib/mcq/utils';
 import { aiAugment, aiExplain } from '@/lib/mcq/ai';
 import { useHasAI } from './useHasAI';
 
-export type Phase = 'setup' | 'quiz' | 'results';
+export type Phase = 'setup' | 'quiz' | 'results' | 'final';
 
 type AIExplainResponse = {
   explanations?: Record<string, string>;
@@ -143,6 +143,37 @@ export function useMCQ(initialSettings?: Partial<QuizSettings>) {
     });
   }
 
+  
+
+function goSetup() {
+  setPhase('setup');
+}
+
+function backFromQuiz() {
+  // go to previous block if possible
+  setCurrentBlock((b) => Math.max(0, b - 1));
+}
+
+function nextFromQuiz() {
+  // from quiz, "siguiente" means evaluate current block
+  setPhase('results');
+}
+
+function backFromResults() {
+  // back to quiz for the same block
+  setPhase('quiz');
+}
+
+function nextFromResults() {
+  // if there is another block, go to next block in quiz; if not, go to final
+  if (currentBlock < blocks.length - 1) {
+    setCurrentBlock((b) => Math.min(blocks.length - 1, b + 1));
+    setPhase('quiz');
+  } else {
+    setPhase('final');
+  }
+}
+
   return {
     // state
     pool,
@@ -167,6 +198,11 @@ export function useMCQ(initialSettings?: Partial<QuizSettings>) {
     startQuiz,
     finishBlock,
     resetAll,
+    goSetup,
+    backFromQuiz,
+    nextFromQuiz,
+    backFromResults,
+    nextFromResults,
     hasAI,
   };
 }

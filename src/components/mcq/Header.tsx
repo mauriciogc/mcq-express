@@ -3,7 +3,7 @@ import React from 'react';
 import type { MCQPool, QuizSettings } from '@/lib/types';
 import {
   PlayIcon,
-  ArrowLeftIcon,
+  SlidersIcon,
   ReadCvLogoIcon,
   ArrowsClockwiseIcon,
   CarrotIcon,
@@ -11,12 +11,13 @@ import {
 } from '@phosphor-icons/react';
 import { FriendlySummary } from './FriendlySummary';
 
-type Phase = 'setup' | 'quiz' | 'results';
+type Phase = 'setup' | 'quiz' | 'results' | 'final';
 
 const LABEL_PHASE = {
   setup: 'Setup',
   quiz: 'En curso',
   results: 'Resultados',
+  final: 'Final',
 };
 
 interface Props {
@@ -35,9 +36,10 @@ interface Props {
 }
 
 const phaseBadgeClass: Record<Phase, string> = {
-  setup: 'badge badge-lilac',
-  quiz: 'badge badge-sky',
-  results: 'badge badge-mint',
+  setup: 'lilac',
+  quiz: 'sky',
+  results: 'mint',
+  final: 'coral',
 };
 
 export default function MCQHeader({
@@ -70,7 +72,7 @@ export default function MCQHeader({
           </p>
         </div>
       </div>
-      <span className={`${phaseBadgeClass[phase]} badge-compact`}>
+      <span className="badge" data-variant={phaseBadgeClass[phase]}>
         {LABEL_PHASE[phase] ?? phase}
       </span>
     </div>
@@ -113,41 +115,16 @@ export default function MCQHeader({
       );
     }
 
-    if (phase === 'quiz') {
-      return (
-        <div className="flex items-center gap-1.5">
-          <button
-            type="button"
-            onClick={onBackToSetup}
-            className="btn"
-            title="Volver a configuración"
-          >
-            <ArrowLeftIcon size={22} aria-hidden />
-            Config
-          </button>
-          <button
-            type="button"
-            onClick={onFinishBlock}
-            className="btn"
-            title="Finalizar bloque actual"
-          >
-            <ReadCvLogoIcon size={22} aria-hidden />
-            Evaluar
-          </button>
-        </div>
-      );
-    }
-
     return (
       <div className="flex items-center gap-1.5">
         <button
           type="button"
-          onClick={onBackToBlock}
+          onClick={onBackToSetup}
           className="btn"
           title="Finalizar bloque actual"
         >
-          <ArrowLeftIcon size={22} aria-hidden />
-          <span>Volver</span>
+          <SlidersIcon size={22} aria-hidden />
+          <span>Setup</span>
         </button>
         <button
           type="button"
