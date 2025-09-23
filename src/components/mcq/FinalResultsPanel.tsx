@@ -11,7 +11,7 @@ interface Props {
 
 export default function FinalResultsPanel({ allQuestions, answers }: Props) {
   const { total, correct, pct } = useMemo(() => {
-    let total_ = allQuestions.length;
+    const total_ = allQuestions.length;
     let correct = 0;
     for (const q of allQuestions) {
       const chosen = new Set(answers[q.id] ?? []);
