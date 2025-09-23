@@ -11,7 +11,7 @@ interface Props {
 
 export default function FinalResultsPanel({ allQuestions, answers }: Props) {
   const { total, correct, pct } = useMemo(() => {
-    let total = allQuestions.length;
+    let total_ = allQuestions.length;
     let correct = 0;
     for (const q of allQuestions) {
       const chosen = new Set(answers[q.id] ?? []);
@@ -20,8 +20,8 @@ export default function FinalResultsPanel({ allQuestions, answers }: Props) {
         chosen.size === ans.size && Array.from(ans).every((x) => chosen.has(x));
       if (ok) correct += 1;
     }
-    const pct = total ? Math.round((correct / total) * 100) : 0;
-    return { total, correct, pct };
+    const pct = total_ ? Math.round((correct / total_) * 100) : 0;
+    return { total: total_, correct, pct };
   }, [allQuestions, answers]);
 
   const scoreVariant = pct >= 80 ? 'mint' : 'coral';

@@ -37,7 +37,6 @@ export default function MCQAi() {
     resetAll,
     hasAI,
     // nav helpers
-    goSetup,
     backFromQuiz,
     nextFromQuiz,
     backFromResults,
