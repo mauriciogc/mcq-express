@@ -27,6 +27,7 @@ export type QuizSettings = {
   allowAIExplain: boolean;
   aiAugmentCount?: number;
   shuffleEnabled: boolean;
+  shuffleQuestionEnabled: boolean;
 };
 
 export type UserAnswerMap = Record<string, string[]>;

@@ -34,9 +34,9 @@ export default function FloatingNav({
       role="navigation"
       aria-label="Navegación del bloque"
     >
-      <div className="floating-nav pointer-events-auto w-full">
-        <div className="max-w-4xl mx-auto px-2">
-          <div className="flex items-center justify-between px-3 py-2 gap-2">
+      <div className="floating-nav pointer-events-auto w-full border-0">
+        <div className="max-w-4xl mx-auto px-10">
+          <div className="flex items-center justify-between px-3 py-4">
             {showBack ? (
               <button
                 type="button"
@@ -44,11 +44,11 @@ export default function FloatingNav({
                 className="btn"
                 title="Atrás"
               >
-                <ArrowLeftIcon size={18} aria-hidden />
-                <span className="hidden sm:inline">Atrás</span>
+                <ArrowLeftIcon size={24} />
+                <span className="inline">Atrás</span>
               </button>
             ) : (
-              <span className="w-[84px]" aria-hidden />
+              <span className="w-21" />
             )}
 
             <div className="badge opacity-80" data-variant="lilac">
@@ -64,13 +64,13 @@ export default function FloatingNav({
             >
               {nextIsFinal ? (
                 <>
-                  <RankingIcon size={18} aria-hidden />
-                  <span className="hidden sm:inline">Resultados</span>
+                  <RankingIcon size={24} />
+                  <span className="inline">Resultados</span>
                 </>
               ) : (
                 <>
-                  <ArrowRightIcon size={18} aria-hidden />
-                  <span className="hidden sm:inline">Siguiente</span>
+                  <ArrowRightIcon size={24} />
+                  <span className="inline">Siguiente</span>
                 </>
               )}
             </button>

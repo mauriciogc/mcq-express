@@ -3,6 +3,7 @@ import {
   ShuffleIcon,
   SparkleIcon,
   ChatCircleTextIcon as ExplainIcon,
+  ShuffleSimpleIcon,
 } from '@phosphor-icons/react';
 import { FeatureRow } from '../ui/FeatureRow';
 import { Switch } from '../ui/Choice';
@@ -11,6 +12,7 @@ type Props = {
   settings: {
     blockSize: number;
     shuffleEnabled: boolean;
+    shuffleQuestionEnabled: boolean;
     allowAIExplain: boolean;
     allowAIAugment: boolean;
     aiAugmentCount?: number;
@@ -51,7 +53,7 @@ export default function SetupPanelPretty({
                 }))
               }
             >
-              {[10, 20, 30, 40, 50, 100].map((n) => (
+              {[5, 10, 15, 20, 25, 30, 40, 50, 100, 200].map((n) => (
                 <option key={n} value={n}>
                   {n}
                 </option>
@@ -69,6 +71,20 @@ export default function SetupPanelPretty({
               checked={settings.shuffleEnabled}
               onChange={(v) =>
                 setSettings((s) => ({ ...s, shuffleEnabled: v }))
+              }
+            />
+          }
+        />
+
+        <FeatureRow
+          icon={<ShuffleSimpleIcon size={22} />}
+          title="Mezclar el orden de las respuestas"
+          desc="Las opciones de cada pregunta se mostrarán en orden aleatorio."
+          control={
+            <Switch
+              checked={settings.shuffleQuestionEnabled}
+              onChange={(v) =>
+                setSettings((s) => ({ ...s, shuffleQuestionEnabled: v }))
               }
             />
           }

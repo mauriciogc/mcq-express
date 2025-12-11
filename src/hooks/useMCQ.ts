@@ -1,6 +1,6 @@
 // src/hooks/useMCQ.ts
 'use client';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import type {
   MCQPool,
   MCQQuestion,
@@ -16,6 +16,23 @@ export type Phase = 'setup' | 'quiz' | 'results' | 'final';
 type AIExplainResponse = {
   explanations?: Record<string, string>;
 };
+
+function scrollToTop() {
+  if (typeof window === 'undefined') return; // por seguridad en Next
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
+}
+
+function shuffleArray<T>(array: T[]): T[] {
+  const result = [...array];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
 
 function isAIExplainResponse(value: unknown): value is AIExplainResponse {
   if (typeof value !== 'object' || value === null) return false;
@@ -33,6 +50,7 @@ export function useMCQ(initialSettings?: Partial<QuizSettings>) {
     allowAIExplain: false,
     aiAugmentCount: 10,
     shuffleEnabled: true,
+    shuffleQuestionEnabled: true,
     ...initialSettings,
   });
   const [currentBlock, setCurrentBlock] = useState(0);
@@ -44,6 +62,13 @@ export function useMCQ(initialSettings?: Partial<QuizSettings>) {
   > | null>(null);
   const [loadingAI, setLoadingAI] = useState(false);
 
+  useEffect(() => {
+    // Solo si estás en una fase “de pantalla grande”
+    if (phase === 'quiz' || phase === 'results' || phase === 'final') {
+      scrollToTop();
+    }
+  }, [phase, currentBlock]);
+
   const total = pool?.questions.length ?? 0;
   const aiCount = pool
     ? pool.questions.filter((q) => q.source === 'ai').length
@@ -51,7 +76,22 @@ export function useMCQ(initialSettings?: Partial<QuizSettings>) {
   const baseCount = total - aiCount;
 
   const blocks = useMemo(() => buildBlocks(pool, settings), [pool, settings]);
-  const activeQuestions: MCQQuestion[] = blocks[currentBlock] ?? [];
+  const activeQuestions: MCQQuestion[] = useMemo(() => {
+    const qs = blocks[currentBlock] ?? [];
+
+    if (!settings.shuffleQuestionEnabled) {
+      return qs;
+    }
+
+    return qs.map((q) => {
+      if (!Array.isArray(q.options)) return q;
+
+      return {
+        ...q,
+        options: shuffleArray(q.options),
+      };
+    });
+  }, [blocks, currentBlock, settings.shuffleQuestionEnabled]);
 
   async function loadFile(file: File) {
     const text = await file.text();
@@ -139,40 +179,38 @@ export function useMCQ(initialSettings?: Partial<QuizSettings>) {
       allowAIExplain: false,
       aiAugmentCount: 10,
       shuffleEnabled: true,
+      shuffleQuestionEnabled: true,
       ...initialSettings,
     });
   }
 
-  
-
-function goSetup() {
-  setPhase('setup');
-}
-
-function backFromQuiz() {
-  // go to previous block if possible
-  setCurrentBlock((b) => Math.max(0, b - 1));
-}
-
-function nextFromQuiz() {
-  // from quiz, "siguiente" means evaluate current block
-  setPhase('results');
-}
-
-function backFromResults() {
-  // back to quiz for the same block
-  setPhase('quiz');
-}
-
-function nextFromResults() {
-  // if there is another block, go to next block in quiz; if not, go to final
-  if (currentBlock < blocks.length - 1) {
-    setCurrentBlock((b) => Math.min(blocks.length - 1, b + 1));
-    setPhase('quiz');
-  } else {
-    setPhase('final');
+  function goSetup() {
+    setPhase('setup');
   }
-}
+
+  function backFromQuiz() {
+    // go to previous block if possible
+    setCurrentBlock((b) => Math.max(0, b - 1));
+  }
+
+  function nextFromQuiz() {
+    // from quiz, "siguiente" means evaluate current block
+    setPhase('results');
+  }
+
+  function backFromResults() {
+    // back to quiz for the same block
+    setPhase('quiz');
+  }
+
+  function nextFromResults() {
+    if (currentBlock < blocks.length - 1) {
+      setCurrentBlock((b) => Math.min(blocks.length - 1, b + 1));
+      setPhase('quiz');
+    } else {
+      setPhase('final');
+    }
+  }
 
   return {
     // state
