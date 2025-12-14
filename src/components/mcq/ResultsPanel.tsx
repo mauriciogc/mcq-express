@@ -41,12 +41,12 @@ export default function ResultsPanel({
   const optionWrong = 'bg-[var(--coral-50)] text-[var(--coral-900)]';
 
   return (
-    <div className="space-y-6 text-[var(--color-text)]">
-      <div className="header-card bg-[var(--color-card)]/80 p-6 space-y-2">
+    <div className="space-y-6 text-text">
+      <div className="header-card bg-card/90 p-6 space-y-2 border-0">
         <div className="progress" data-variant={scoreVariant}>
           <span className="bar" style={{ width: `${pct}%` }} />
         </div>
-        <p className="text-xs text-[var(--color-muted)]">
+        <p className="text-xs text-muted">
           Preguntas: <strong>{rows.length}</strong> · Puntaje:{' '}
           <strong>{score}</strong>/{rows.length} (<strong>{pct}%</strong>)
         </p>
@@ -59,7 +59,7 @@ export default function ResultsPanel({
           icon={
             <RobotIcon
               size={96}
-              className="text-[var(--lilac-500)]/80"
+              className="text-(--lilac-500)/80"
               weight="thin"
             />
           }
@@ -77,14 +77,14 @@ export default function ResultsPanel({
 
           // Card base con radio correcto y barra superior redondeada
           const cardBase =
-            'relative overflow-hidden rounded-[var(--radius-xl)] p-4 bg-[var(--color-card)] header-card shadow-xl';
+            'relative overflow-hidden rounded-[var(--radius-xl)] p-4 bg-[var(--color-card)] header-card shadow-xl border-0';
 
           return (
             <li key={q.id} className={cardBase}>
               {/* Barra superior (gradiente y respeta el radio) */}
               <span
                 aria-hidden
-                className="absolute left-0 top-0 h-1 w-full"
+                className="absolute left-0 top-0 h-3 w-full"
                 style={{
                   background: ok
                     ? 'linear-gradient(90deg, var(--mint-200), var(--mint-400))'
@@ -96,7 +96,7 @@ export default function ResultsPanel({
               <p className="font-medium">{q.prompt}</p>
 
               {/* Opciones */}
-              <div className="mt-3 space-y-2" role="list">
+              <div className="mt-3 space-y-2 bord" role="list">
                 {q.options.map((opt) => {
                   const checked = chosen.has(opt.id);
                   const isRight = correct.has(opt.id);
@@ -120,7 +120,7 @@ export default function ResultsPanel({
 
               {failed && (
                 <div className="mt-4 space-y-2">
-                  <div className="text-xs tracking-wide text-[var(--color-muted)]">
+                  <div className="text-xs tracking-wide text-muted">
                     Respuesta correcta
                   </div>
                   {correctIds.map((id) => (
@@ -160,6 +160,7 @@ export default function ResultsPanel({
           );
         })}
       </ul>
+      <div className="h-30" aria-hidden />
     </div>
   );
 }

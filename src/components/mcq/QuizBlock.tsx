@@ -1,9 +1,7 @@
 // src/components/mcq/QuizBlock.tsx
 'use client';
-import React from 'react';
 import type { MCQQuestion, UserAnswerMap } from '@/lib/types';
 import QuestionCard from './QuestionCard';
-import { ArrowLeftIcon, ArrowRightIcon } from '@phosphor-icons/react/dist/ssr';
 
 interface Props {
   activeQuestions: MCQQuestion[];

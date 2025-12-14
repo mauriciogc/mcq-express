@@ -60,16 +60,13 @@ export default function MCQHeader({
     <div className="flex items-center gap-2.5 justify-between">
       <div className="flex items-center ">
         <div
-          className="grid place-items-center text-[var(--coral-400)] p-2"
+          className="grid place-items-center text-(--coral-400) p-2"
           aria-hidden
         >
           <CarrotIcon size={32} aria-hidden />
         </div>
-        <div className=" text-[var(--color-text)]">
+        <div className="text-text">
           <h1 className="text-3xl ">Questify</h1>
-          <p className="mt-0.5 text-sm">
-            La forma más rápida de aprender respondiendo
-          </p>
         </div>
       </div>
       <span className="badge" data-variant={phaseBadgeClass[phase]}>

@@ -34,9 +34,9 @@ export default function FloatingNav({
       role="navigation"
       aria-label="Navegación del bloque"
     >
-      <div className="floating-nav pointer-events-auto w-full border-0">
-        <div className="max-w-4xl mx-auto px-10">
-          <div className="flex items-center justify-between px-3 py-4">
+      <div className=" header-card pointer-events-auto w-full">
+        <div className="max-w-4xl mx-auto px-10 ">
+          <div className="flex items-center justify-between px-3 py-4 ">
             {showBack ? (
               <button
                 type="button"

@@ -45,7 +45,7 @@ export default function MCQAi() {
 
   return (
     <>
-      <div className="relative p-6 max-w-4xl mx-auto space-y-6 text-[var(--color-text)]">
+      <div className="relative p-6 max-w-4xl mx-auto space-y-6 text-text">
         <div className="bg-gradient"></div>
         <Header
           phase={phase as 'setup' | 'quiz' | 'results' | 'final'}
