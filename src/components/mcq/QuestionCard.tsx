@@ -16,18 +16,18 @@ export default function QuestionCard({ q, answers, onAnswer }: Props) {
   const isRadio = q.type === 'radio';
 
   return (
-    <li className="header-card shadow-xl p-1 bg-white/80">
-      <p className="font-medium mb-3 text-text ">
+    <li className=" header-card shadow-xl p-6 bg-card">
+      <p className="font-medium mb-3 text-text">
         {q.prompt}
         {q.source == 'ai' && (
-          <span className="ml-2 text-xs px-3 py-0.5 rounded-lg bg-(--lilac-200) text-(--lilac-800) inline-flex items-center gap-1">
+          <span className="ml-2 text-xs px-3 py-0.5 rounded-lg bg-[var(--lilac-200)] text-[var(--lilac-800)] inline-flex items-center gap-1">
             <RobotIcon size={12} />
             IA
           </span>
         )}
       </p>
 
-      <div className="space-y-2 ">
+      <div className="space-y-2">
         {q.options.map((opt) => {
           const isChecked = selected.has(opt.id);
           const name = `q-${q.id}`;
