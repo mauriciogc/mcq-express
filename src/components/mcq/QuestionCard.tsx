@@ -17,40 +17,38 @@ export default function QuestionCard({ q, answers, onAnswer }: Props) {
 
   return (
     <li className=" header-card shadow-xl p-1">
-      <div className="rounded-xl bg-white shadow-lg p-2">
-        <p className="font-medium mb-3 text-text ">
-          {q.prompt}
-          {q.source == 'ai' && (
-            <span className="ml-2 text-xs px-3 py-0.5 rounded-lg bg-(--lilac-200) text-(--lilac-800) inline-flex items-center gap-1">
-              <RobotIcon size={12} />
-              IA
-            </span>
-          )}
-        </p>
+      <p className="font-medium mb-3 text-text ">
+        {q.prompt}
+        {q.source == 'ai' && (
+          <span className="ml-2 text-xs px-3 py-0.5 rounded-lg bg-(--lilac-200) text-(--lilac-800) inline-flex items-center gap-1">
+            <RobotIcon size={12} />
+            IA
+          </span>
+        )}
+      </p>
 
-        <div className="space-y-2 ">
-          {q.options.map((opt) => {
-            const isChecked = selected.has(opt.id);
-            const name = `q-${q.id}`;
+      <div className="space-y-2 ">
+        {q.options.map((opt) => {
+          const isChecked = selected.has(opt.id);
+          const name = `q-${q.id}`;
 
-            return isRadio ? (
-              <Radio
-                key={opt.id}
-                name={name}
-                checked={isChecked}
-                onChange={() => onAnswer(q, opt.id, true)}
-                label={opt.text}
-              />
-            ) : (
-              <Checkbox
-                key={opt.id}
-                checked={isChecked}
-                onChange={(v) => onAnswer(q, opt.id, v)}
-                label={opt.text}
-              />
-            );
-          })}
-        </div>
+          return isRadio ? (
+            <Radio
+              key={opt.id}
+              name={name}
+              checked={isChecked}
+              onChange={() => onAnswer(q, opt.id, true)}
+              label={opt.text}
+            />
+          ) : (
+            <Checkbox
+              key={opt.id}
+              checked={isChecked}
+              onChange={(v) => onAnswer(q, opt.id, v)}
+              label={opt.text}
+            />
+          );
+        })}
       </div>
     </li>
   );
