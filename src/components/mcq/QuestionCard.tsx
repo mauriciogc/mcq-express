@@ -16,7 +16,7 @@ export default function QuestionCard({ q, answers, onAnswer }: Props) {
   const isRadio = q.type === 'radio';
 
   return (
-    <li className=" header-card shadow-xl p-1">
+    <li className="header-card shadow-xl p-1 bg-white/80">
       <p className="font-medium mb-3 text-text ">
         {q.prompt}
         {q.source == 'ai' && (
